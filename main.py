@@ -1,32 +1,40 @@
 import time
 
-from dataloader import CoinMarketCapAPIDataLoader, WallexAPIDataLoader
-from configs import COINMARKETCAP_API_CONFIG, WALLEX_API_CONFIG
+from dataProvider import CoinMarketCapAPIDataProvider, WallexAPIDataProvider
+from configs import (
+    CMC_API_CONFIG,
+    WALLEX_API_CONFIG,
+    CMC_API_CONFIG_CRYPTO_LIST,
+    WALLEX_API_CONFIG_CRYPTO_LIST,
+)
 
 
 def main():
-    coinMarketCap = CoinMarketCapAPIDataLoader(COINMARKETCAP_API_CONFIG)
-    wallex = WallexAPIDataLoader(WALLEX_API_CONFIG)
+    coinMarketCap = CoinMarketCapAPIDataProvider(CMC_API_CONFIG)
+    wallex = WallexAPIDataProvider(WALLEX_API_CONFIG)
     # while(True):
 
     # Fetch Request
-    coinMarketCapResult = coinMarketCap.fetchAPIData(
-        endPoint="v2/cryptocurrency/quotes/latest", queryParts={"symbol": "BTC"}
-    )
 
-    coinMarketCapResult = coinMarketCap.fetchAPIData(
-        endPoint="v2/cryptocurrency/quotes/latest", queryParts={"symbol": "ETH"}
-    )
+    # CoinMarketCap
+    for crypto in CMC_API_CONFIG_CRYPTO_LIST:
+        CMCResponse = coinMarketCap.fetchAPIData(
+            endPoint="v2/cryptocurrency/quotes/latest", queryParts={"symbol": crypto}
+        )
+        print(coinMarketCap.parseAPIResponse(response=CMCResponse, symbol=crypto))
 
-    wallexResult = wallex.fetchAPIData(
-        endPoint="v1/udf/history",
-        queryParts={
-            "symbol": "USDTTMN",
-            "resolution": "1",
-            "from": str(int(time.time() - 60)),
-            "to": str(int(time.time())),
-        },
-    )
+    # Wallex
+    for crypto in WALLEX_API_CONFIG_CRYPTO_LIST:
+        wallexResponse = wallex.fetchAPIData(
+            endPoint="v1/udf/history",
+            queryParts={
+                "symbol": crypto,
+                "resolution": "1",
+                "from": str(int(time.time() - 60)),
+                "to": str(int(time.time())),
+            },
+        )
+        print(wallex.parseAPIResponse(response=wallexResponse, symbol=crypto))
     # Handle result
 
     # Sleep

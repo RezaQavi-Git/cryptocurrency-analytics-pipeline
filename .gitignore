@@ -3,4 +3,5 @@ __pycache__/
 
 .env
 
-
+README.md
+parse.py

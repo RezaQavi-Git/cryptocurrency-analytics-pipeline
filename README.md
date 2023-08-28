@@ -44,7 +44,7 @@ services:
 CoinMarketcap
 
 ```
-curl -H "X-CMC_PRO_API_KEY: da5f87fd-c580-4396-8cd3-be54604ace44" 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BTC' | json_pp
+curl -H "X-CMC_PRO_API_KEY: "" 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BTC' | json_pp
 ```
 
 

@@ -6,6 +6,11 @@ load_dotenv()
 SLEEP_TIME = 60
 FETCHED_DATA_FOLDER = './fetched/'
 
+HTTP_CALL_MAX_RETRIES = 3
+HTTP_CALL_TIMEOUT = 10
+HTTP_CALL_DELAY = 5
+
+
 CMC_API_CONFIG = {
     "url": "https://pro-api.coinmarketcap.com/",
     "headerAuthKey": "X-CMC_PRO_API_KEY",

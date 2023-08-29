@@ -2,7 +2,13 @@ import requests, csv, time
 import urllib.parse
 from datetime import datetime
 
-from configs import CMC_TIMESTAMP_STR_PATTERN, FETCHED_DATA_FOLDER
+from configs import (
+    CMC_TIMESTAMP_STR_PATTERN,
+    FETCHED_DATA_FOLDER,
+    HTTP_CALL_MAX_RETRIES,
+    HTTP_CALL_TIMEOUT,
+    HTTP_CALL_DELAY
+)
 
 
 class APIDataProvider:
@@ -18,12 +24,20 @@ class APIDataProvider:
         headers = {
             self.config["headerAuthKey"]: self.config["token"],
         }
-        response = requests.get(apiUrl, headers=headers)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print("Error fetching data:", response.status_code)
-            return None
+        for retry in range(HTTP_CALL_MAX_RETRIES):
+            try:
+                response = requests.get(apiUrl, headers=headers, timeout= HTTP_CALL_TIMEOUT)
+                response.raise_for_status()
+                if response.status_code == 200:
+                    return response.json()
+                else:
+                    print("Error fetching data:", response.status_code)
+                    return None
+            except (requests.exceptions.RequestException) as e:
+                print(f"Request failed. Retrying ({retry + 1}/{HTTP_CALL_MAX_RETRIES})...")
+                time.sleep(HTTP_CALL_DELAY) 
+
+        raise Exception("Max retries exceeded")
 
     def fetchAPIData(self, endPoint: str, queryParts: dict):
         apiUrl = (

@@ -1,8 +1,8 @@
-import requests, json
+import requests, csv, time
 import urllib.parse
 from datetime import datetime
 
-from configs import CMC_TIMESTAMP_STR_PATTERN
+from configs import CMC_TIMESTAMP_STR_PATTERN, FETCHED_DATA_FOLDER
 
 
 class APIDataProvider:
@@ -22,17 +22,26 @@ class APIDataProvider:
         if response.status_code == 200:
             return response.json()
         else:
+            print("Error fetching data:", response.status_code)
             return None
 
     def fetchAPIData(self, endPoint: str, queryParts: dict):
         apiUrl = (
             self.config["url"] + endPoint + self.generateQuery(queryParts=queryParts)
         )
+        print(apiUrl)
         response = self.httpRequest(apiUrl=apiUrl)
         return response
 
     def parseAPIResponse(self, response: str, symbol: str):
         return
+
+    def storeParsedResult(self, data: dict, filename: str, time: int):
+        print("Wrote to CSV")
+        with open(FETCHED_DATA_FOLDER + filename, mode="a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([str(time)] + list(data.values()))
+            file.close()
 
 
 class CoinMarketCapAPIDataProvider(APIDataProvider):
@@ -54,6 +63,7 @@ class CoinMarketCapAPIDataProvider(APIDataProvider):
                 pattern=CMC_TIMESTAMP_STR_PATTERN,
             ),
             "symbol": symbol,
+            "name": response["data"][symbol][0]["name"],
             "price": responseQuote["price"],
             "volume": responseQuote["volume_24h"],
             "market_cap": responseQuote["market_cap"],

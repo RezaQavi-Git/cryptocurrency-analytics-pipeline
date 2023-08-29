@@ -1,7 +1,9 @@
 .vscode/
 __pycache__/
+fetched/
 
 .env
 
 README.md
 parse.py
+utils.py

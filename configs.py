@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+SLEEP_TIME = 60
+FETCHED_DATA_FOLDER = './fetched/'
 
 CMC_API_CONFIG = {
     "url": "https://pro-api.coinmarketcap.com/",

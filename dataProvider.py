@@ -1,7 +1,9 @@
 import requests, csv, time
 import urllib.parse
+import logging
 from datetime import datetime
 
+from utils import Logger
 from configs import (
     CMC_TIMESTAMP_STR_PATTERN,
     FETCHED_DATA_FOLDER,
@@ -31,10 +33,9 @@ class APIDataProvider:
                 if response.status_code == 200:
                     return response.json()
                 else:
-                    print("Error fetching data:", response.status_code)
                     return None
             except (requests.exceptions.RequestException) as e:
-                print(f"Request failed. Retrying ({retry + 1}/{HTTP_CALL_MAX_RETRIES})...")
+                Logger().getLogger().warning(f"Request failed. Retrying ({retry + 1}/{HTTP_CALL_MAX_RETRIES})...")
                 time.sleep(HTTP_CALL_DELAY) 
 
         raise Exception("Max retries exceeded")
@@ -43,7 +44,6 @@ class APIDataProvider:
         apiUrl = (
             self.config["url"] + endPoint + self.generateQuery(queryParts=queryParts)
         )
-        print(apiUrl)
         response = self.httpRequest(apiUrl=apiUrl)
         return response
 
@@ -51,11 +51,11 @@ class APIDataProvider:
         return
 
     def storeParsedResult(self, data: dict, filename: str, time: int):
-        print("Wrote to CSV")
         with open(FETCHED_DATA_FOLDER + filename, mode="a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([str(time)] + list(data.values()))
             file.close()
+        Logger().getLogger().info(f"Data successfully wrote to {filename}")
 
 
 class CoinMarketCapAPIDataProvider(APIDataProvider):

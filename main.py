@@ -1,4 +1,5 @@
 import time
+import logging
 
 from dataProvider import CoinMarketCapAPIDataProvider, WallexAPIDataProvider
 from configs import (
@@ -11,6 +12,7 @@ from configs import (
 
 
 def main():
+
     coinMarketCap = CoinMarketCapAPIDataProvider(CMC_API_CONFIG)
     wallex = WallexAPIDataProvider(WALLEX_API_CONFIG)
     while True:

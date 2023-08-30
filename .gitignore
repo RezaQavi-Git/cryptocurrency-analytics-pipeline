@@ -7,3 +7,7 @@ fetched/
 README.md
 parse.py
 dataProccessing.py
+
+
+minio/minio-secrets.env
+minio/data/

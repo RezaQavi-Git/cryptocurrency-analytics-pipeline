@@ -1,15 +1,17 @@
 import requests, csv, time
 import urllib.parse
-import logging
 from datetime import datetime
 
+
 from utils import Logger
+from minioClient import MinIOClient
 from configs import (
     CMC_TIMESTAMP_STR_PATTERN,
     FETCHED_DATA_FOLDER,
     HTTP_CALL_MAX_RETRIES,
     HTTP_CALL_TIMEOUT,
-    HTTP_CALL_DELAY
+    HTTP_CALL_DELAY,
+    RAW_DATA_BUCKET,
 )
 
 
@@ -28,15 +30,20 @@ class APIDataProvider:
         }
         for retry in range(HTTP_CALL_MAX_RETRIES):
             try:
-                response = requests.get(apiUrl, headers=headers, timeout= HTTP_CALL_TIMEOUT)
+                session = requests.Session()
+                response = session.get(
+                    apiUrl, headers=headers, timeout=HTTP_CALL_TIMEOUT
+                )
                 response.raise_for_status()
                 if response.status_code == 200:
                     return response.json()
                 else:
                     return None
-            except (requests.exceptions.RequestException) as e:
-                Logger().getLogger().warning(f"Request failed. Retrying ({retry + 1}/{HTTP_CALL_MAX_RETRIES})...")
-                time.sleep(HTTP_CALL_DELAY) 
+            except Exception as e:
+                Logger().getLogger().warning(
+                    f"Request failed. Retrying ({retry + 1}/{HTTP_CALL_MAX_RETRIES})..."
+                )
+                time.sleep(HTTP_CALL_DELAY)
 
         raise Exception("Max retries exceeded")
 
@@ -51,7 +58,18 @@ class APIDataProvider:
         return
 
     def storeParsedResult(self, data: dict, filename: str, time: int):
-        with open(FETCHED_DATA_FOLDER + filename, mode="a", newline="") as file:
+        minioClient = MinIOClient()
+
+        if minioClient.checkBucketExists(bucket=RAW_DATA_BUCKET):
+            print()
+            minioClient.putObject(
+                bucket=RAW_DATA_BUCKET,
+                data=data,
+                folderName=filename,
+                fileName=str(time),
+            )
+
+        with open(FETCHED_DATA_FOLDER + filename + '.csv', mode="a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([str(time)] + list(data.values()))
             file.close()

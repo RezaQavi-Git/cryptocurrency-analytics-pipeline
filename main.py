@@ -1,7 +1,8 @@
 import time
-import logging
 
 from dataProvider import CoinMarketCapAPIDataProvider, WallexAPIDataProvider
+
+from utils import Logger
 from configs import (
     SLEEP_TIME,
     CMC_API_CONFIG,
@@ -12,60 +13,60 @@ from configs import (
 
 
 def main():
-
     coinMarketCap = CoinMarketCapAPIDataProvider(CMC_API_CONFIG)
     wallex = WallexAPIDataProvider(WALLEX_API_CONFIG)
     while True:
         now = int(time.time())
-        # Fetch Request
-
         # CoinMarketCap
         for crypto in CMC_API_CONFIG_CRYPTO_LIST:
-            CMCResponse = coinMarketCap.fetchAPIData(
-                endPoint="v2/cryptocurrency/quotes/latest",
-                queryParts={"symbol": crypto},
-            )
-            cmcResult = coinMarketCap.parseAPIResponse(
-                response=CMCResponse, symbol=crypto
-            )
+            try:
+                CMCResponse = coinMarketCap.fetchAPIData(
+                    endPoint="v2/cryptocurrency/quotes/latest",
+                    queryParts={"symbol": crypto},
+                )
+                cmcResult = coinMarketCap.parseAPIResponse(
+                    response=CMCResponse, symbol=crypto
+                )
 
-            # CMC fetched data file row format
-            # (now timestamp),(last updated timestamp),(symbol),(name),(price),(volume),(marketCap) 
-            coinMarketCap.storeParsedResult(
-                data=cmcResult,
-                filename="{symbol}.csv".format(symbol=crypto),
-                time=now,
-            )
+                # CMC fetched data file row format
+                # (now timestamp),(last updated timestamp),(symbol),(name),(price),(volume),(marketCap)
+                coinMarketCap.storeParsedResult(
+                    data=cmcResult,
+                    filename=crypto,
+                    time=now,
+                )
+            except Exception as e:
+                Logger().getLogger().warning(e)
 
-        # Wallex 
+        # Wallex
         timestamp = (now // 60) * 60
         for crypto in WALLEX_API_CONFIG_CRYPTO_LIST:
-            wallexResponse = wallex.fetchAPIData(
-                endPoint="v1/udf/history",
-                queryParts={
-                    "symbol": crypto,
-                    "resolution": "1",
-                    "from": str(timestamp - SLEEP_TIME),
-                    "to": str(timestamp + SLEEP_TIME),
-                    # "from": str(1693287359),
-                    # "to": str(1693287419),
-                },
-            )
-            wallexResult = wallex.parseAPIResponse(
-                response=wallexResponse, symbol=crypto
-            )
+            try:
+                wallexResponse = wallex.fetchAPIData(
+                    endPoint="v1/udf/history",
+                    queryParts={
+                        "symbol": crypto,
+                        "resolution": "1",
+                        "from": str(timestamp - SLEEP_TIME),
+                        "to": str(timestamp + SLEEP_TIME),
+                    },
+                )
+                wallexResult = wallex.parseAPIResponse(
+                    response=wallexResponse, symbol=crypto
+                )
 
-            # Wallex fetched data file row format
-            # (now timestamp),(last updated timestamp),(symbol),(price),(volume) 
-            wallex.storeParsedResult(
-                data=wallexResult,
-                filename="{symbol}.csv".format(symbol=crypto),
-                time=now,
-            )
+                # Wallex fetched data file row format
+                # (now timestamp),(last updated timestamp),(symbol),(price),(volume)
+                wallex.storeParsedResult(
+                    data=wallexResult,
+                    filename=crypto,
+                    time=now,
+                )
+            except Exception as e:
+                Logger().getLogger().warning(e)
 
-        time.sleep(SLEEP_TIME)
         # Sleep
-    return
+        time.sleep(SLEEP_TIME)
 
 
 main()

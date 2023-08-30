@@ -3,15 +3,15 @@ import urllib.parse
 from datetime import datetime
 
 
-from utils import Logger
+from utils import Logger, generateFilePath
 from minioClient import MinIOClient
 from configs import (
     CMC_TIMESTAMP_STR_PATTERN,
-    FETCHED_DATA_FOLDER,
     HTTP_CALL_MAX_RETRIES,
     HTTP_CALL_TIMEOUT,
     HTTP_CALL_DELAY,
     RAW_DATA_BUCKET,
+    FETCHED_DATA_FOLDER,
 )
 
 
@@ -69,7 +69,11 @@ class APIDataProvider:
                 fileName=str(time),
             )
 
-        with open(FETCHED_DATA_FOLDER + filename + '.csv', mode="a", newline="") as file:
+        with open(
+            generateFilePath(folderPath=FETCHED_DATA_FOLDER, fileName=filename),
+            mode="a",
+            newline="",
+        ) as file:
             writer = csv.writer(file)
             writer.writerow([str(time)] + list(data.values()))
             file.close()

@@ -6,7 +6,6 @@ cap_env/
 .env
 
 parse.py
-dataProccessing.py
 
 
 minio/minio-secrets.env

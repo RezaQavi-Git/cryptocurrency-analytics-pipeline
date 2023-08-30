@@ -5,7 +5,6 @@ cap_env/
 
 .env
 
-README.md
 parse.py
 dataProccessing.py
 

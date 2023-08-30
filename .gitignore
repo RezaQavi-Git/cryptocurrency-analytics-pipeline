@@ -1,6 +1,7 @@
 .vscode/
 __pycache__/
-fetched/
+crawler/fetched/
+cap_env/
 
 .env
 

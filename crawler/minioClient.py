@@ -13,7 +13,7 @@ class MinIOClient:
                 endpoint=MINIO_ENDPOINT,
                 access_key=MINIO_ACCESS_KEY,
                 secret_key=MINIO_SECRET_KEY,
-                secure=False,  # Set to True if you are using HTTPS
+                secure=False, 
             )
         except Exception as e:
             Logger().getLogger().error(f"Create MinIO Client Error: {e}")
@@ -22,7 +22,6 @@ class MinIOClient:
         return self.minioClient
 
     def checkBucketExists(self, bucket):
-        # Check if the folder exists, create it if not
         if not self.minioClient.bucket_exists(bucket):
             self.minioClient.make_bucket(bucket)
 

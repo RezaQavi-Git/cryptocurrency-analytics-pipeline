@@ -22,5 +22,8 @@ def generateFilePath(folderPath: str, fileName: str):
 
 
 def convertTimestampToDatetime(timestamp: int):
-
-    return str(datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%dT%H:%M:%S"))
+    return str(
+        datetime.utcfromtimestamp(timestamp)
+        .replace(second=0, microsecond=0, minute=0)
+        .strftime("%Y-%m-%dT%H:%M:%S")
+    )

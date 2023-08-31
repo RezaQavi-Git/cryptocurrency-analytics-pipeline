@@ -1,16 +1,5 @@
 # cryptocurrency-analytics-pipeline
 
-## MinIO
-
-```
-docker run -p 9000:9000 \
-  -e "MINIO_ACCESS_KEY=3439f6400c1dc3c42676954fb771e296" \
-  -e "MINIO_SECRET_KEY=885ee905d4bc1738cac4c7a97da38fca" \
-  -v /home/tapsi/Desktop/interview/minio/data:/data \
-  docker.arvancloud.ir/minio/minio server /data
-
-```
-
 
 ## Spark
 link [https://github.com/brunocfnba/docker-spark-cluster]

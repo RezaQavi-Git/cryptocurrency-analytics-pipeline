@@ -12,6 +12,7 @@ from configs import (
     HTTP_CALL_DELAY,
     RAW_DATA_BUCKET,
     FETCHED_DATA_FOLDER,
+    FILE_FORMAT
 )
 
 
@@ -61,7 +62,6 @@ class APIDataProvider:
         minioClient = MinIOClient()
 
         if minioClient.checkBucketExists(bucket=RAW_DATA_BUCKET):
-            print()
             minioClient.putObject(
                 bucket=RAW_DATA_BUCKET,
                 data=data,
@@ -70,7 +70,7 @@ class APIDataProvider:
             )
 
         with open(
-            generateFilePath(folderPath=FETCHED_DATA_FOLDER, fileName=filename),
+            generateFilePath(folderPath=FETCHED_DATA_FOLDER, fileName=filename) + FILE_FORMAT,
             mode="a",
             newline="",
         ) as file:

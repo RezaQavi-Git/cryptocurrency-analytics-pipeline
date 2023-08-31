@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from configs import FETCHED_DATA_FOLDER
 
@@ -17,4 +18,9 @@ class Logger:
 
 
 def generateFilePath(folderPath: str, fileName: str):
-    return folderPath + fileName + ".csv"
+    return folderPath + fileName
+
+
+def convertTimestampToDatetime(timestamp: int):
+
+    return str(datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%dT%H:%M:%S"))

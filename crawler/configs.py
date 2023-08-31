@@ -9,11 +9,14 @@ load_dotenv()
 SLEEP_TIME = 60
 FETCHED_DATA_FOLDER = "./crawler/fetched/"
 AGG_DATA_FOLDER = "./crawler/agg/"
+JOINED_DATA_FOLDER = "./crawler/joined/"
 
+FILE_FORMAT = '.csv'
 HTTP_CALL_MAX_RETRIES = 4
 HTTP_CALL_TIMEOUT = 10
 HTTP_CALL_DELAY = 5
 
+PROCESSING_TIME_PERIOD = 3600
 
 # CMC Configurations
 
@@ -49,6 +52,7 @@ WALLEX_API_CONFIG_CRYPTO_LIST = ["USDTTMN"]
 
 WALLEX_RAW_DATA_SCHEMA = [
     "timestamp",
+    "updatedTimestamp",
     "symbol",
     "price",
     "volume",
@@ -60,3 +64,4 @@ MINIO_SECRET_KEY = os.environ.get("MINIO_SECRET_KEY")
 
 RAW_DATA_BUCKET = "test-raw-data"
 AGG_DATA_BUCKET = "test-agg-data"
+JOINED_DATA_BUCKET = "test-joined-data"

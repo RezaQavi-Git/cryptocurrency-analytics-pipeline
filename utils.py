@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 
-from configs import FETCHED_DATA_FOLDER
+from configs import FILE_FORMAT
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -17,8 +17,11 @@ class Logger:
         return self.logger
 
 
-def generateFilePath(folderPath: str, fileName: str):
+def generateFileName(folderPath: str, fileName: str):
     return folderPath + fileName
+
+def generateFilePath(folderPath: str, fileName: str):
+    return folderPath + fileName + FILE_FORMAT
 
 
 def convertTimestampToDatetime(timestamp: int):

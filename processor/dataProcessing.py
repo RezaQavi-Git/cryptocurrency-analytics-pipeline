@@ -11,7 +11,7 @@ log = logging.getLogger()
 log.setLevel(logging.CRITICAL)
 
 from minion.minioClient import MinIOClient
-from utils import Logger, generateFilePath, convertTimestampToDatetime
+from utils import Logger, generateFilePath, generateFileName, convertTimestampToDatetime
 from configs import (
     CMC_API_CONFIG_CRYPTO_LIST,
     WALLEX_API_CONFIG_CRYPTO_LIST,
@@ -87,7 +87,6 @@ def readData(spark: SparkSession, crypto: str, schema: list, time: int):
     # Load Local Data
     df = spark.read.csv(
         path=generateFilePath(folderPath=FETCHED_DATA_FOLDER, fileName=crypto)
-        + FILE_FORMAT
     )
     df = df.toDF(*schema)
 
@@ -119,7 +118,7 @@ def storeProcessedData(
             fileName=convertTimestampToDatetime(timestamp=time),
         )
 
-    outputPath = generateFilePath(
+    outputPath = generateFileName(
         folderPath=folder,
         fileName=f"{crypto}_{convertTimestampToDatetime(timestamp=time)}",
     )

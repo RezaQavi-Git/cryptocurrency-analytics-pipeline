@@ -69,7 +69,7 @@ class APIDataProvider:
             )
 
         with open(
-            generateFilePath(folderPath=FETCHED_DATA_FOLDER, fileName=filename) + FILE_FORMAT,
+            generateFilePath(folderPath=FETCHED_DATA_FOLDER, fileName=filename),
             mode="a",
             newline="",
         ) as file:

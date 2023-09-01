@@ -4,6 +4,7 @@ fetched/
 agg/
 joined/
 cap_env/
+mount_folder/
 
 .env
 

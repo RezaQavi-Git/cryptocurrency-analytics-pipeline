@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   minio:
     image: docker.arvancloud.ir/minio/minio:latest
@@ -10,8 +10,14 @@ services:
     command: server /data
     volumes:
       - ./data:/data
+    networks:
+      - application_network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: ["CMD", "curl", "-f", "http://minio:9000/minio/health/live"]
       interval: 30s
       timeout: 10s
       retries: 5
+
+networks:
+  application_network:
+    external: true

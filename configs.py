@@ -58,10 +58,10 @@ WALLEX_RAW_DATA_SCHEMA = [
     "volume",
 ]
 # MinOI Configurations
-MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT")
+MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT", default='localhost:9000')
 MINIO_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY")
 MINIO_SECRET_KEY = os.environ.get("MINIO_SECRET_KEY")
 
-RAW_DATA_BUCKET = "test-raw-data"
-AGG_DATA_BUCKET = "test-agg-data"
-JOINED_DATA_BUCKET = "test-joined-data"
+RAW_DATA_BUCKET = "test-raw-data-d"
+AGG_DATA_BUCKET = "test-agg-data-d"
+JOINED_DATA_BUCKET = "test-joined-data-d"

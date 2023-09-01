@@ -17,4 +17,6 @@ Before using this YAML file, make sure you have the following prerequisites in p
 2. Run the following command to start the Minio Docker container:
 
    ```bash
+   docker network create application_network
    docker-compose -f minio.yaml up
+   ```

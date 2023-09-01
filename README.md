@@ -45,7 +45,7 @@ This project consists of two major parts, each of which should be run separately
 
 ### 1. Crawler
 
-The Crawler is responsible for fetching data from the APIs mentioned earlier and storing it in local CSV files and MinIO. To set up MinIO, refer to the `minio` folder in the repository.
+The Crawler is responsible for fetching data from the APIs mentioned earlier and storing it in local CSV files and MinIO. To set up MinIO, refer to the `minion` folder in the repository.
 
 ```bash
 git clone https://github.com/RezaQavi-Git/cryptocurrency-analytics-pipeline.git

@@ -1,6 +1,6 @@
 # Crawler
 
-The Crawler is responsible for fetching data from the APIs mentioned earlier and storing it in local CSV files and MinIO. To set up MinIO, refer to the `minio` folder in the repository.
+The Crawler is responsible for fetching data from the APIs mentioned earlier and storing it in local CSV files and MinIO. To set up MinIO, refer to the `minion` folder in the repository.
 
 ## How To Run
 1. Local: To run this project locally, as you can see in main RAEDME.mc file in this project, use below command: 

@@ -5,6 +5,7 @@ ENV PIP_CACHE_DIR=/tmp/pip-cache
 
 WORKDIR /app/processing
 RUN chmod -R 777 /app/processing
+RUN chmod -R 777 /app/processing
 
 
 COPY configs.py utils.py .env /app/processing/
@@ -19,5 +20,5 @@ USER root
 RUN pip3 install -r requirements.txt
 
 # Entry point for running the PySpark job
-USER spark
+USER root
 ENTRYPOINT ["/opt/spark/bin/spark-submit", "--master", "spark://spark-master:7077", "/app/processing/dataProcessing.py"]

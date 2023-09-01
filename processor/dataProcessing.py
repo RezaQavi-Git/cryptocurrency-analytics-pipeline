@@ -11,7 +11,7 @@ log = logging.getLogger()
 log.setLevel(logging.CRITICAL)
 
 from minion.minioClient import MinIOClient
-from utils import Logger, generateFilePath, generateFileName, convertTimestampToDatetime
+from utils import Logger, generateFilePath, generateFileName, convertTimestampToDatetime, makeDirectory
 from configs import (
     CMC_API_CONFIG_CRYPTO_LIST,
     WALLEX_API_CONFIG_CRYPTO_LIST,
@@ -122,9 +122,13 @@ def storeProcessedData(
         folderPath=folder,
         fileName=f"{crypto}_{convertTimestampToDatetime(timestamp=time)}",
     )
-    dataframe.write.csv(outputPath, header=True, mode="overwrite")
-    Logger().getLogger().info(f"Data successfully wrote to {outputPath}")
 
+    try:
+        makeDirectory(outputPath)
+        dataframe.write.csv(outputPath, header=True, mode="overwrite")
+        Logger().getLogger().info(f"Data successfully wrote to {outputPath}")
+    except Exception as e:
+        Logger().getLogger().error(f'Write to file failed, error {e}')
 
 def main():
     # Create spark session

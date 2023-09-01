@@ -1,3 +1,4 @@
+import os
 import logging
 from datetime import datetime
 
@@ -30,3 +31,12 @@ def convertTimestampToDatetime(timestamp: int):
         .replace(second=0, microsecond=0, minute=0)
         .strftime("%Y-%m-%dT%H-%M-%S")
     )
+
+
+def makeDirectory(path: str):
+    try:
+        os.makedirs(path)
+        Logger().getLogger().info(f"Nested directory '{path}' created successfully!")
+
+    except OSError as e:
+        Logger().getLogger().error(f"Error creating nested directory '{path}': {e}")

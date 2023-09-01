@@ -10,5 +10,5 @@ cap_env/
 parse.py
 
 
-minio/minio-secrets.env
-minio/data/
+minion/minio-secrets.env
+minion/data/

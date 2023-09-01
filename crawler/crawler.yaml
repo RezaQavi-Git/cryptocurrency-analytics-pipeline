@@ -1,0 +1,13 @@
+version: '3'
+services:
+  crawler:
+    image: crawler:latest 
+    container_name: crawler
+    environment:
+      MINIO_ENDPOINT: minio:9000 
+    networks:
+      - application_network
+
+networks:
+  application_network:
+    external: true

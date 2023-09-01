@@ -8,11 +8,9 @@ COPY minion/minioClient.py /app/crawler/minion/
 
 COPY crawler/ /app/crawler/
 
-# Install any dependencies
 COPY crawler/requirements.txt /app/
 RUN pip3 install -r requirements.txt
 
 RUN export PYTHONPATH=$PWD
 RUN echo $PYTHONPATH
-# Define the command to run when the container starts
 CMD ["python3", "crawler/main.py"]

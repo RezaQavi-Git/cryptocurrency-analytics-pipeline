@@ -2,9 +2,8 @@ import requests, csv, time
 import urllib.parse
 from datetime import datetime
 
-
 from utils import Logger, generateFilePath
-from minioClient import MinIOClient
+from minion.minioClient import MinIOClient
 from configs import (
     CMC_TIMESTAMP_STR_PATTERN,
     HTTP_CALL_MAX_RETRIES,

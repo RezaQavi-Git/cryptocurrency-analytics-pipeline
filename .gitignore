@@ -1,8 +1,8 @@
 .vscode/
 __pycache__/
-crawler/fetched/
-crawler/agg/
-crawler/joined/
+fetched/
+agg/
+joined/
 cap_env/
 
 .env

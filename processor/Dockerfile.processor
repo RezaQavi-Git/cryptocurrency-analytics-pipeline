@@ -10,11 +10,11 @@ RUN chmod -R 777 /app/processing
 COPY configs.py utils.py .env /app/processing/
 COPY minion/minioClient.py /app/processing/minion/
 
-COPY processor/dataProcessing.py /app/processing/
+COPY processor/main.py /app/processing/
 COPY processor/requirements.txt /app/processing/
 
 USER root
 RUN pip3 install -r requirements.txt
 
 USER root
-ENTRYPOINT ["/opt/spark/bin/spark-submit", "--master", "spark://spark-master:7077", "/app/processing/dataProcessing.py"]
+ENTRYPOINT ["/opt/spark/bin/spark-submit", "--master", "spark://spark-master:7077", "/app/processing/main.py"]

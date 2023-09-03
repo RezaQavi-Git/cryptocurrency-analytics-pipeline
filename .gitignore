@@ -9,7 +9,7 @@ mount_folder/
 .env
 
 parse.py
-
+minion/json_reader.py
 
 minion/minio-secrets.env
 minion/data/

@@ -11,7 +11,13 @@ log = logging.getLogger()
 log.setLevel(logging.CRITICAL)
 
 from minion.minioClient import MinIOClient
-from utils import Logger, generateFilePath, generateFileName, convertTimestampToDatetime, makeDirectory
+from utils import (
+    Logger,
+    generateFilePath,
+    generateFileName,
+    convertTimestampToDatetime,
+    makeDirectory,
+)
 from configs import (
     CMC_API_CONFIG_CRYPTO_LIST,
     WALLEX_API_CONFIG_CRYPTO_LIST,
@@ -128,7 +134,8 @@ def storeProcessedData(
         dataframe.write.csv(outputPath, header=True, mode="overwrite")
         Logger().getLogger().info(f"Data successfully wrote to {outputPath}")
     except Exception as e:
-        Logger().getLogger().error(f'Write to file failed, error {e}')
+        Logger().getLogger().error(f"Write to file failed, error {e}")
+
 
 def main():
     # Create spark session
@@ -142,16 +149,14 @@ def main():
         spark=spark,
         cryptoList=CMC_API_CONFIG_CRYPTO_LIST,
         schema=CMC_RAW_DATA_SCHEMA,
-        # time=now,
-        time=1693304521,
+        time=now,
     )
     # Wallex
     wallexDataframes = loadRawData(
         spark=spark,
         cryptoList=WALLEX_API_CONFIG_CRYPTO_LIST,
         schema=WALLEX_RAW_DATA_SCHEMA,
-        # time=now,
-        time=1693304521,
+        time=now,
     )
 
     dataframes.update(cmcDataframes)

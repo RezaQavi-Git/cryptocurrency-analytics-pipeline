@@ -1,4 +1,4 @@
-# Crawler
+# Processor
 
 The Processor uses the data obtained from the Crawler and performs data processing using PySpark. It also provides aggregated results, which are stored in local CSV files and MinIO.
 
